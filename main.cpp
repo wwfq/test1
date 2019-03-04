@@ -36,30 +36,36 @@
 
 int main()
 {
-    QDateTime dat1,dat2;
-    int num;
+    srand(time(nullptr));
+    int i1=0,i2=0;
+    int state =1;
     while(true)
     {
-        std::string dt1,dt2;
-        std::cout<<"please insert datetime in format \"DD:MM:YYYY-HH:MM:SS\"\r\n";
-        std::cout<<"date1:"; std::cin>>dt1;
-        std::cout<<"date2:"; std::cin>>dt2;
-        std::cout<<"numbers of procedures:"; std::cin>>num;
-        dat1=QDateTime::fromString(dt1.data(),"dd:MM:yyyy-hh:mm:ss");
-        dat2=QDateTime::fromString(dt2.data(),"dd:MM:yyyy-hh:mm:ss");
-        if(dat1.isValid()&&dat2.isValid())
+        std::cout<<"state="<<state<<std::endl;
+        i1=rand()%2;
+        i2=rand()%2;
+        switch(state)
+        {
+        case 1:
+            if(i2==0)
+                state=4;
             break;
-        std::cout<<"input incorrect, try again"<<std::endl;
-        std::cin.clear();
+        case 2:
+            if(i1==0)
+                state=3;
+            break;
+        case 3:
+            if(i1==1)
+                state=1;
+            else if(i1==1)
+                state=2;
+            break;
+        case 4:
+            if(i1==0&&i2==0)
+                state=3;
+            break;
+        }
     }
-    long long int step=dat1.secsTo(dat2);
-    std::cout<<step<<std::endl;
-    for(int i=0;i<num;++i)
-    {
-        QDateTime temp=dat1.addSecs(step*i);
-        std::cout<<"procedure #"+std::to_string(i+1)+" at "<<temp.toString("dd:MM:yyyy-hh:mm:ss").toStdString()<<std::endl;
-    }
-    std::cout<<"finished\n";
     return 0;
 }
 
