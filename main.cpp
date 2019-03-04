@@ -27,14 +27,18 @@
 #include <random>
 #include <fstream>
 #include <ios>
-
+#include <algorithm>
+#include <string>
+#include <QDate>
 //#define WRTEST
-
+#define RDTEST
 struct zad
 {
-    std::string fName;
-    double diag;
-    double price;
+    std::string name;
+    QDate date;
+    double sum_Q1;
+    double sum_Q2;
+    float discount;
 };
 
 
@@ -45,44 +49,64 @@ int main()
 #ifdef WRTEST
     std::ofstream fout;
     fout.open("test.txt",std::ios::binary);
-    for(int i=0;i<10000+rand()%200;++i)
+    for(int i=0;i<1000000;++i)
     {
-        zad val;
-        val.fName="fName"+std::to_string(rand()%5+1);
-        val.diag=round(rand()%500/11.0);
-        val.price=rand()%10000/15.0;
-
-        int siz=val.fName.size();
+        zad val{"name"+std::to_string(rand()%10),QDate::currentDate(),rand()*1.0,rand()*1.0,rand()*1.0f};
+        int siz=val.name.size();
         fout.write((char*)(&siz),sizeof(siz));
-        fout.write(val.fName.data(),siz);
-        fout.write((char*)(&val.diag),sizeof(val.diag));
-        fout.write((char*)(&val.price),sizeof(val.price));
+        fout.write(val.name.data(),siz);
+        fout.write((char*)(&val.date),sizeof(val.date));
+        fout.write((char*)(&val.sum_Q1),sizeof(val.sum_Q1));
+        fout.write((char*)(&val.sum_Q2),sizeof(val.sum_Q2));
+        fout.write((char*)(&val.discount),sizeof(val.discount));
     }
     fout.close();
-#else
+#endif
+#ifdef RDTEST
+    std::list<zad> arr;
     std::ifstream fin;
-    int count=0;
     fin.open("test.txt",std::ios::binary);
     int siz;
     while(fin.read((char*)(&siz),sizeof(siz)))
     {
-        zad val;
         char *val0=new char[siz];
+        zad val;
         fin.read(val0,siz);
-        double v1;
-        fin.read((char*)(&v1),sizeof (v1));
-        double v2;
-        fin.read((char*)(&v2),sizeof (v2));
-
-        if(v1>32&&std::string(val0)=="fName0")
-        {
-            std::cout<<siz<<'\t'<<val0<<'\t'<<v1<<'\t'<<v2<<std::endl;
-            ++count;
-        }
+        val.name=val0;
+        fin.read((char*)(&val.date),sizeof(val.date));
+        fin.read((char*)(&val.sum_Q1),sizeof (val.sum_Q1));
+        fin.read((char*)(&val.sum_Q2),sizeof (val.sum_Q2));
+        fin.read((char*)(&val.discount),sizeof (val.discount));
+        // std::cout<<val.name<<'\t'<<val.date.toString("dd:MM:yyyy").toStdString()<<'\t'<<val.discount<<std::endl;
+        arr.push_back(std::move(val));
         delete []val0;
     }
-    std::cout<<count<<std::endl;
+    std::cout<<"arr size="<<arr.size()<<std::endl;
+    int count=0;
+    std::ofstream fout;
+    fout.open("test.txt",std::ios::binary);
+    for(auto&item:arr)
+    {
+        if(item.sum_Q1>=10000&&item.sum_Q2>=10000)
+        {
+            ++count;
+            item.discount+=0.07f;
+            if(item.discount>1)
+                item.discount=1;
+            int siz=item.name.size();
+            fout.write((char*)(&siz),sizeof(siz));
+            fout.write(item.name.data(),siz);
+            fout.write((char*)(&item.date),sizeof(item.date));
+            fout.write((char*)(&item.sum_Q1),sizeof(item.sum_Q1));
+            fout.write((char*)(&item.sum_Q2),sizeof(item.sum_Q2));
+            fout.write((char*)(&item.discount),sizeof(item.discount));
+        }
+    }
+    std::cout<<"discount changer for "<<count<<" purhuasers"<<std::endl;
+
+    fout.close();
 #endif
+
     std::cout<<"finished\n";
     return 0;
 }
