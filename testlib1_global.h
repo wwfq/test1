@@ -1,0 +1,12 @@
+#ifndef TESTLIB1_GLOBAL_H
+#define TESTLIB1_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(TESTLIB1_LIBRARY)
+#  define TESTLIB1SHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define TESTLIB1SHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // TESTLIB1_GLOBAL_H
