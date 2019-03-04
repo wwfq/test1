@@ -30,85 +30,35 @@
 #include <algorithm>
 #include <string>
 #include <QDate>
+#include <QDateTime>
 #define WRTEST
 #define RDTEST
-struct zad
-{
-    std::string name;
-    QDate date;
-    double sum_Q1;
-    double sum_Q2;
-    float discount;
-};
-
 
 int main()
 {
-
-#ifdef WRTEST
+    QDateTime dat1,dat2;
+    int num;
+    while(true)
     {
-        std::ofstream fout;
-        fout.open("test.txt",std::ios::binary);
-        for(int i=0;i<1000000;++i)
-        {
-            zad val{"name"+std::to_string(rand()%10),QDate::currentDate(),rand()*1.0,rand()*1.0,rand()*1.0f};
-            int siz=static_cast<int>(val.name.size());
-            fout.write(reinterpret_cast<char*>(&siz),sizeof(siz));
-            fout.write(val.name.data(),siz);
-            fout.write(reinterpret_cast<char*>(&val.date),sizeof(val.date));
-            fout.write(reinterpret_cast<char*>(&val.sum_Q1),sizeof(val.sum_Q1));
-            fout.write(reinterpret_cast<char*>(&val.sum_Q2),sizeof(val.sum_Q2));
-            fout.write(reinterpret_cast<char*>(&val.discount),sizeof(val.discount));
-        }
-        fout.close();
+        std::string dt1,dt2;
+        std::cout<<"please insert datetime in format \"DD:MM:YYYY-HH:MM:SS\"\r\n";
+        std::cout<<"date1:"; std::cin>>dt1;
+        std::cout<<"date2:"; std::cin>>dt2;
+        std::cout<<"numbers of procedures:"; std::cin>>num;
+        dat1=QDateTime::fromString(dt1.data(),"dd:MM:yyyy-hh:mm:ss");
+        dat2=QDateTime::fromString(dt2.data(),"dd:MM:yyyy-hh:mm:ss");
+        if(dat1.isValid()&&dat2.isValid())
+            break;
+        std::cout<<"input incorrect, try again"<<std::endl;
+        std::cin.clear();
     }
-#endif
-#ifdef RDTEST
+    long long int step=dat1.secsTo(dat2);
+    std::cout<<step<<std::endl;
+    for(int i=0;i<num;++i)
     {
-        std::list<zad> arr;
-        std::ifstream fin;
-        fin.open("test.txt",std::ios::binary);
-        int siz;
-        while(fin.read(reinterpret_cast<char*>(&siz),sizeof(siz)))
-        {
-            char *val0=new char[static_cast<unsigned long long>(siz)];
-            zad val;
-            fin.read(val0,siz);
-            val.name=val0;
-            fin.read(reinterpret_cast<char*>(&val.date),sizeof(val.date));
-            fin.read(reinterpret_cast<char*>(&val.sum_Q1),sizeof (val.sum_Q1));
-            fin.read(reinterpret_cast<char*>(&val.sum_Q2),sizeof (val.sum_Q2));
-            fin.read(reinterpret_cast<char*>(&val.discount),sizeof (val.discount));
-            arr.push_back(std::move(val));
-            delete []val0;
-        }
-        std::cout<<"arr size="<<arr.size()<<std::endl;
-        int count=0;
-        std::ofstream fout;
-        fout.open("test.txt",std::ios::binary);
-        for(auto&item:arr)
-        {
-            if(item.sum_Q1>=10000&&item.sum_Q2>=10000)
-            {
-                ++count;
-                item.discount+=0.07f;
-                if(item.discount>1)
-                    item.discount=1;
-                int siz=static_cast<int>(item.name.size());
-                fout.write(reinterpret_cast<char*>(&siz),sizeof(siz));
-                fout.write(item.name.data(),siz);
-                fout.write(reinterpret_cast<char*>(&item.date),sizeof(item.date));
-                fout.write(reinterpret_cast<char*>(&item.sum_Q1),sizeof(item.sum_Q1));
-                fout.write(reinterpret_cast<char*>(&item.sum_Q2),sizeof(item.sum_Q2));
-                fout.write(reinterpret_cast<char*>(&item.discount),sizeof(item.discount));
-            }
-        }
-        std::cout<<"discount changer for "<<count<<" purhuasers"<<std::endl;
-
-        fout.close();
+        QDateTime temp=dat1.addSecs(step*i);
+        std::cout<<"procedure #"+std::to_string(i+1)+" at "<<temp.toString("dd:MM:yyyy-hh:mm:ss").toStdString()<<std::endl;
     }
-#endif
-
     std::cout<<"finished\n";
     return 0;
 }
