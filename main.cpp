@@ -33,20 +33,15 @@
 #include <QDateTime>
 //#define WRTEST
 //#define RDTEST
-#include "zad188.h"
-#include "zad191.h"
-#include "zad194.h"
+#include "lev2.h"
 
 int main()
 {
     srand(static_cast<uint>(time(nullptr)));
     for(int i=0;i<10;++i)
     {
-        zad194 val(rand(),rand(),rand(),rand(),rand()%60+1,rand(),rand(),rand());
+        lev2 val(std::to_string(rand()%100),100.2,pow(2,rand()%5+1),rand()%3+1);
         std::cout<<val.info()<<std::endl;
-        val.add100();
-        std::cout<<val.info()<<std::endl;
-        std::cout<<val.getP()<<std::endl;
     }
     return 0;
 }

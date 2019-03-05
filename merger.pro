@@ -16,16 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-    zad188.cpp \
-    zad191.cpp \
-    zad194.cpp
+    lev1.cpp \
+    lev2.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS +=\
-    zad188.h \
-    zad191.h \
-    zad194.h
+HEADERS += \
+    lev1.h \
+    lev2.h
