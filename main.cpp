@@ -34,38 +34,43 @@
 #define WRTEST
 #define RDTEST
 
+
+
+class zad186
+{
+public:
+    zad186(int min,int sec);
+    std::string info();
+    int secTotal();
+private:
+    int m_min;
+    int m_sec;
+};
+
 int main()
 {
-    srand(time(nullptr));
-    int i1=0,i2=0;
-    int state =1;
-    while(true)
+    srand(static_cast<uint>(time(nullptr)));
+    for(int i=0;i<10;++i)
     {
-        std::cout<<"state="<<state<<std::endl;
-        i1=rand()%2;
-        i2=rand()%2;
-        switch(state)
-        {
-        case 1:
-            if(i2==0)
-                state=4;
-            break;
-        case 2:
-            if(i1==0)
-                state=3;
-            break;
-        case 3:
-            if(i1==1)
-                state=1;
-            else if(i1==1)
-                state=2;
-            break;
-        case 4:
-            if(i1==0&&i2==0)
-                state=3;
-            break;
-        }
+        zad186 val(rand()%10,rand()%1000);
+        std::cout<<val.info()<<"  "<<val.secTotal()<<std::endl;
     }
     return 0;
 }
 
+zad186::zad186(int min,int sec):m_min(min),m_sec(sec)
+{
+    if(m_sec>=60)
+    {
+        m_min+=round(m_sec/60);
+        m_sec=m_sec%60;
+    }
+}
+int zad186::secTotal()
+{
+    return m_min*60+m_sec;
+}
+std::string zad186::info()
+{
+    return (m_min>0?std::to_string(m_min)+"min.":"")+(m_sec>0?std::to_string(m_sec)+"sec.":"");
+}
