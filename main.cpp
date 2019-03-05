@@ -34,14 +34,23 @@
 //#define WRTEST
 //#define RDTEST
 #include "lev2.h"
-
+#include "memory"
 int main()
 {
-    srand(static_cast<uint>(time(nullptr)));
-    for(int i=0;i<10;++i)
+    std::vector<student*> list;
+    std::shared_ptr<student> s1=std::make_shared<student>("student1","www",3,4);
+    std::shared_ptr<student> s2=std::make_shared<studentP>("student2","www",3,4,true);
+    std::shared_ptr<student> s3=std::make_shared<studentP>("student3","www",3,4,false);
+
+    list.push_back( s1.get() );
+    list.push_back(s2.get());
+    list.push_back(s3.get());
+
+    for(const auto&item:list)
     {
-        lev2 val(std::to_string(rand()%100),100.2,pow(2,rand()%5+1),rand()%3+1);
-        std::cout<<val.info()<<std::endl;
+        std::cout<<item->info()<<std::endl;
+        item->toNextKurs();
+        std::cout<<item->info()<<std::endl;
     }
     return 0;
 }

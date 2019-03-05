@@ -2,14 +2,15 @@
 #define LEV2_H
 #include "lev1.h"
 
-class lev2:public lev1
+class studentP:public student
 {
 public:
-    lev2(std::string brand,double price,int memo,int sim);
-     double getQ();
-     std::string info();
+    studentP(std::string fio,std::string facult,int kurs,int minGrad,bool payd);
+    virtual void toNextKurs() override;
+    virtual int getSpepend() override;
+    virtual ~studentP() override;
 private:
-    int m_sim;
+    bool m_payd;
 };
 
 #endif // LEV2_H

@@ -2,16 +2,19 @@
 #define LEV1_H
 #include <string>
 
-class lev1
+class student
 {
 public:
-    lev1(std::string brand,double price,int memo);
-    double getQ();
+    student(std::string fio,std::string facult,int kurs,int minGrad);
+    virtual void toNextKurs();
+    virtual int getSpepend();
+    virtual ~student();
     std::string info();
-private:
-    std::string m_brand;
-    double m_price;
-    int m_memo;
+protected:
+    std::string m_fio;
+    std::string m_facult;
+    int m_kurs;
+    int m_minGrad;
 };
 
 #endif // LEV1_H

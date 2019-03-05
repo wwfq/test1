@@ -1,15 +1,38 @@
 #include "lev1.h"
 
-lev1::lev1(std::string brand,double price,int memo):
-    m_brand(brand),m_price(price),m_memo(memo)
-{   }
-
-double lev1::getQ()
+student::student(std::string fio,std::string facult,int kurs,int minGrad):
+    m_fio(fio),m_facult(facult),m_kurs(kurs),m_minGrad(minGrad)
 {
-    return m_memo/m_price;
 }
 
-std::string lev1::info()
+void student::toNextKurs()
 {
-    return "lev1(brand: "+m_brand+"; price: "+std::to_string(m_price)+"; memo: "+std::to_string(m_memo)+")";
+    if(m_minGrad>3)
+    {
+        ++m_kurs;
+        m_minGrad=0;
+    }
+}
+
+int student::getSpepend()
+{
+    switch(m_minGrad)
+    {
+    case 4:
+        return 200;
+    case 5:
+        return 300;
+    default:
+        return 0;
+    }
+}
+
+student::~student()
+{
+
+}
+
+std::string student::info()
+{
+    return m_fio+" "+m_facult+" "+std::to_string(m_kurs)+" "+std::to_string(m_minGrad)+" "+std::to_string(getSpepend());
 }

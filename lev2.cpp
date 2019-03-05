@@ -1,17 +1,22 @@
 #include "lev2.h"
 
-lev2::lev2(std::string brand,double price,int memo,int sim):
-    lev1(brand,price,memo),m_sim(sim)
+studentP::studentP(std::string fio, std::string facult, int kurs, int minGrad,bool payd):
+    student(fio,facult,kurs,minGrad),m_payd(payd)
 {
 
 }
-
-double lev2::getQ()
+int studentP::getSpepend()
 {
-    return lev1::getQ()*m_sim;
+    return 0;
 }
 
-std::string lev2::info()
+void studentP::toNextKurs()
 {
-    return lev1::info()+", lev2(sim: "+std::to_string(m_sim)+")";
+    if(m_payd)
+        student::toNextKurs();
+}
+
+studentP::~studentP()
+{
+
 }
