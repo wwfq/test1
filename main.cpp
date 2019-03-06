@@ -33,25 +33,61 @@
 #include <QDateTime>
 //#define WRTEST
 //#define RDTEST
-#include "lev2.h"
+#include "lev1.h"
 #include "memory"
+#include "hformal.h"
+#include "hnoformal.h"
+#include "hreal.h"
+#include <stack>
+
 int main()
 {
-    std::vector<student*> list;
-    std::shared_ptr<student> s1=std::make_shared<student>("student1","www",3,4);
-    std::shared_ptr<student> s2=std::make_shared<studentP>("student2","www",3,4,true);
-    std::shared_ptr<student> s3=std::make_shared<studentP>("student3","www",3,4,false);
+    std::stack<std::string> list;
+    list.push("Alexander");
+    list.push("Andey");
+    list.push("Anastasia");
+    list.push("Irina");
+    list.push("Natali");
+    list.push("Pavel");
+    list.push("Roman");
+    list.push("Svetlana");
+    list.push("Sergey");
+    list.push("Tatiana");
 
-    list.push_back( s1.get() );
-    list.push_back(s2.get());
-    list.push_back(s3.get());
-
-    for(const auto&item:list)
+    std::vector<human*> hList;
+    while(!list.empty())
     {
-        std::cout<<item->info()<<std::endl;
-        item->toNextKurs();
-        std::cout<<item->info()<<std::endl;
+        switch(rand()%3+1)
+        {
+        case 1:
+            hList.push_back(new humanF(list.top(),rand()%21+20));
+            list.pop();
+            break;
+        case 2:
+            hList.push_back(new humanN(list.top(),rand()%21+20));
+            list.pop();
+            break;
+        case 3:
+            hList.push_back(new humanR(list.top(),rand()%21+20));
+            list.pop();
+            break;
+        }
     }
+
+    for(int i=0;i<hList.size();++i)
+    {
+        hList[i]->tallS();
+        for(int j=0;j<hList.size();++j)
+        {
+            if(j==i)
+                continue;
+            hList[i]->sayHi(*hList[j]);
+            hList[j]->sayHi(*hList[i]);
+        }
+    }
+    for(auto& item:hList)
+        delete item;
+
     return 0;
 }
 

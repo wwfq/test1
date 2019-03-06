@@ -1,20 +1,20 @@
 #ifndef LEV1_H
 #define LEV1_H
 #include <string>
+#include <iostream>
 
-class student
+class human
 {
 public:
-    student(std::string fio,std::string facult,int kurs,int minGrad);
-    virtual void toNextKurs();
-    virtual int getSpepend();
-    virtual ~student();
-    std::string info();
-protected:
-    std::string m_fio;
-    std::string m_facult;
-    int m_kurs;
-    int m_minGrad;
+    human(std::string name,int age);
+    virtual void sayHi(const human& opon)=0;
+    virtual void tallS()=0;
+     int getAge()const;
+     std::string getName() const;
+     virtual ~human(){}
+private:
+    std::string m_name;
+    int m_age;
 };
 
 #endif // LEV1_H

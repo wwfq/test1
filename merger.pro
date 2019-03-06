@@ -17,7 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
     lev1.cpp \
-    lev2.cpp
+    hreal.cpp \
+    hformal.cpp \
+    hnoformal.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -26,4 +28,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     lev1.h \
-    lev2.h
+    hreal.h \
+    hformal.h \
+    hnoformal.h
